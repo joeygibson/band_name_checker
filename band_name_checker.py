@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import sys
 
 import whois
 from whois.parser import PywhoisError
@@ -20,6 +21,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='See if possible band names\' domains are already taken')
     parser.add_argument('band_names', metavar='name', type=str, nargs='*', help='possible band names')
     parser.add_argument('--file')
+
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     args = parser.parse_args()
 
