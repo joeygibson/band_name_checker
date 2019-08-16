@@ -1,20 +1,51 @@
 import argparse
 import datetime
+import re
+import string
 import sys
 
 import whois
 from whois.parser import PywhoisError
 
+replace_punctuation = str.maketrans(string.punctuation, ' ' * len(string.punctuation))
 
-def domain_lookup(domain):
-    domain = domain.strip()
+
+def lookup_domain(domain):
     result = None
+
     try:
         result = whois.whois(domain)
     except PywhoisError:
         pass
 
     return domain, result
+
+
+def process_name(name):
+    domains = create_domains(name.strip())
+
+    results = map(lookup_domain, domains)
+
+    return results
+
+
+def canonicalize(name):
+    return name.translate(replace_punctuation).replace(' ', '')
+
+
+def create_domains(name):
+    domains = []
+
+    if re.search(r"\.com|\.net", name) is None:
+        canonical_name = canonicalize(name)
+        domains.append(f'{canonical_name}.com')
+        domains.append(f'{canonical_name}.net')
+        domains.append(f'{canonical_name}band.com')
+        domains.append(f'{canonical_name}band.net')
+    else:
+        domains.append(name)
+
+    return domains
 
 
 if __name__ == "__main__":
@@ -31,11 +62,11 @@ if __name__ == "__main__":
     results = []
 
     if len(args.band_names) > 0:
-        results = map(domain_lookup, args.band_names)
+        results = map(process_name, args.band_names)
     elif args.file is not None:
         with open(args.file) as file:
             lines = file.readlines()
-            results = map(domain_lookup, [line.strip() for line in lines if len(line.strip()) > 0])
+            results = map(process_name, [line.strip() for line in lines if len(line.strip()) > 0])
 
     for d, r in results:
         if r is not None:
