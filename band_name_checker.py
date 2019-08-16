@@ -49,9 +49,9 @@ def create_domains(name):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='See if possible band names\' domains are already taken')
+    parser = argparse.ArgumentParser(description='Check if domains for possible band names are already taken')
     parser.add_argument('band_names', metavar='name', type=str, nargs='*', help='possible band names')
-    parser.add_argument('--file')
+    parser.add_argument('--file', help="file of possible band names, one per line")
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
