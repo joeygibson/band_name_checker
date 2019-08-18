@@ -15,6 +15,7 @@ def lookup_domain(domain):
 
     try:
         result = whois.whois(domain)
+
     except PywhoisError:
         pass
 
@@ -25,8 +26,9 @@ def process_name(name):
     domains = create_domains(name.strip())
 
     results = map(lookup_domain, domains)
+    actual_results = [(d, r) for d, r in results if r]
 
-    return results
+    return actual_results
 
 
 def canonicalize(name):

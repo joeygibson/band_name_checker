@@ -13,7 +13,7 @@ Run `pip install -r requirements.txt`
 
 ## Usage
 
-```shell script
+```python
 usage: band_name_checker.py [-h] [--file FILE] [name [name ...]]
 
 Check if domains for possible band names are already taken

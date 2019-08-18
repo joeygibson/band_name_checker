@@ -1,6 +1,6 @@
 import unittest
 
-from band_name_checker import canonicalize, create_domains, lookup_domain
+from band_name_checker import canonicalize, create_domains, lookup_domain, process_name
 
 
 class MyTestCase(unittest.TestCase):
@@ -32,6 +32,13 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(name, domain)
         self.assertEqual(name, result['domain_name'].lower())
+
+    def test_process_name(self):
+        name = "joey gibson"
+        # expected = []
+        results = process_name(name)
+
+        print(list(results))
 
 
 
